@@ -5,6 +5,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[0;33m'
 PURPLE='\033[0;35m'
+PURPLE='\033[1;34m'
 NC='\033[0m' # No Color
 
 # Function to clear the terminal screen
@@ -307,7 +308,7 @@ run_tunnel() {
 
     # Get and confirm tunnel name from user
     while true; do
-        echo -e "\033[1;34mNote:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
+        echo -e "${BLUE}Note:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
         read -p $'\nEnter the tunnel name: ' tunnel_name
 
         # Confirm tunnel name
@@ -325,8 +326,8 @@ run_tunnel() {
 
     # Get and confirm subdomain from user
     while true; do
-        echo -e "\033[1;34mNote:${NC} ${GREEN}The subdomain is not needed to be added before in Cloudflare DNS records. It will be added automatically.${NC}"
-        echo -e "\033[1;34mInput:${NC} ${YELLOW}Please provide the full sub-domain as: \033[1;31msubdomain.example.com${NC}"
+        echo -e "${BLUE}Note:${NC} ${GREEN}The subdomain is not needed to be added before in Cloudflare DNS records. It will be added automatically.${NC}"
+        echo -e "${BLUE}Input:${NC} ${YELLOW}Please provide the full sub-domain as: \033[1;31msubdomain.example.com${NC}"
         read -p "Enter the subdomain where you want to run the tunnel: " subdomain
 
         # Confirm subdomain
@@ -427,7 +428,7 @@ remove_specific_tunnel() {
     check_and_change_directory
 
     # Get the tunnel name or ID from the user
-    echo -e "\033[1;34mNote:${NC} ${GREEN}You can see created tunnels by selecting 5 in menu.${NC}"
+    echo -e "${BLUE}Note:${NC} ${GREEN}You can see created tunnels by selecting 5 in menu.${NC}"
     read -p "Enter the name or ID of the tunnel to close: " tunnel
 
     # Confirm the action
