@@ -217,6 +217,12 @@ install_cloudflared() {
 create_tunnel() {
     clear_screen
 
+    # Check if the /root/Argo directory exists
+    if [ ! -d "/root/Argo" ]; then
+        echo "First install cloudflared using 2 option in menu."
+        return
+    fi
+
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
         echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
