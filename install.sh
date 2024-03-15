@@ -44,7 +44,7 @@ check_tunnel_status() {
 check_tunnel_running() {
     # Check if tmux is installed
     if ! command -v tmux &>/dev/null; then
-        echo -e "\033[0;31mNot Running.\033[0m"
+         echo -e "\033[0;31mNot Running.\033[0m"
         return
     fi
 
