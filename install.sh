@@ -97,6 +97,7 @@ check_argo_directory() {
     # Check if the /root/Argo directory exists
     if [ ! -d "/root/Argo" ]; then
         echo "First install cloudflared using 2 option in menu."
+        exit 1
     fi
 
 }
