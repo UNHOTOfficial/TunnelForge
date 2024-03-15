@@ -136,9 +136,9 @@ list_tunnels() {
 # Function to display the menu
 display_menu() {
     clear_screen
-    echo -e "${PURPLE}===================================="
-    echo -e "  ========= ${GREEN}TunnelForge${PURPLE} ========="
-    echo -e "====================================${NC}\n"
+    echo -e "${PURPLE}=================================================="
+    echo -e "  ============= ${GREEN}TunnelForge${PURPLE} ============="
+    echo -e "==================================================${NC}\n"
     echo "------------------ Server Actions ----------------"
     echo -e "1. Config Server\n"
 
