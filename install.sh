@@ -139,7 +139,7 @@ display_menu() {
     echo -e "${PURPLE}===================================="
     echo -e "  ========= ${GREEN}TunnelForge${PURPLE} ========="
     echo -e "====================================${NC}\n"
-    echo "------------------ Server Actions ------------------"
+    echo "------------------ Server Actions ----------------"
     echo -e "1. Config Server\n"
 
     echo "------------------ Cloudflared ------------------"
