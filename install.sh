@@ -2,9 +2,10 @@
 
 # Define color codes
 RED='\033[0;31m'
-GREEN='${GREEN}'
-YELLOW='${YELLOW}'
-NC='${NC}' # No Color
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+PURPLE='\033[0;35m'
+NC='\033[0m' # No Color
 
 # Function to clear the terminal screen
 clear_screen() {
@@ -120,8 +121,8 @@ check_and_change_directory() {
 # Function to display the menu
 display_menu() {
     clear_screen
-    echo -e "\033[0;35m===================================="
-    echo -e "  ========= ${GREEN}TunnelForge\033[0;35m ========="
+    echo -e "${PURPLE}===================================="
+    echo -e "  ========= ${GREEN}TunnelForge${PURPLE} ========="
     echo -e "====================================${NC}\n"
     echo "1. Config Server"
     echo "2. Install Cloudflared"
@@ -162,7 +163,7 @@ display_menu() {
     # Display server IPs
     get_ips
 
-    echo -e "\n\033[0;35m====================================${NC}"
+    echo -e "\n${PURPLE}====================================${NC}"
 }
 
 # Function to pause and wait for user input
