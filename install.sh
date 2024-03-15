@@ -118,6 +118,20 @@ check_and_change_directory() {
     fi
 }
 
+# Function to show tunnels list
+list_tunnels() {
+    echo -e "${YELLOW}Here are your existing tunnels:${NC}"
+    # Get tunnels list
+    output=$(./$(get_filename) tunnel list)
+
+    # Check if the output contains "No tunnels were found"
+    if [[ $output == *"No tunnels were found for the given filter flags"* ]]; then
+        echo -e "${RED}No tunnels exist.${NC}"
+    else
+        echo "$output"
+    fi
+}
+
 # Function to display the menu
 display_menu() {
     clear_screen
@@ -265,19 +279,10 @@ create_tunnel() {
         ./$(get_filename) tunnel login
     fi
 
-    echo -e "${YELLOW}Here are your existing tunnels:${NC}"
-    # Get tunnels list
-    output=$(./$(get_filename) tunnel list)
-
-    # Check if the output contains "No tunnels were found"
-    if [[ $output == *"No tunnels were found for the given filter flags"* ]]; then
-        echo "${RED}No tunnels exist.${NC}"
-    else
-        echo "$output"
-    fi
+    list_tunnels
 
     # Get tunnel name from user
-    read -p "Enter a unique name for the new tunnel: " tunnel_name
+    read -p $'\nEnter a unique name for the new tunnel: ' tunnel_name
 
     # Run cloudflared tunnel create with user-provided tunnel name
     ./$(get_filename) tunnel create "$tunnel_name"
@@ -298,10 +303,12 @@ run_tunnel() {
 
     echo -e "\033[0;34mStarting the process to run a tunnel...${NC}"
 
+    list_tunnels
+
     # Get and confirm tunnel name from user
     while true; do
         echo -e "\033[1;34mNote:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
-        read -p "Enter the tunnel name: " tunnel_name
+        read -p $'\nEnter the tunnel name: ' tunnel_name
 
         # Confirm tunnel name
         read -p "You entered '$tunnel_name'. Is this correct? (y/n): " confirm
