@@ -267,6 +267,8 @@ create_tunnel() {
 
     echo -e "${YELLOW}Here are your existing tunnels:${NC}"
     # Get tunnels list
+    output=$(./$(get_filename) tunnel list)
+
     # Check if the output contains "No tunnels were found"
     if [[ $output == *"No tunnels were found for the given filter flags"* ]]; then
         echo "${RED}No tunnels exist.${NC}"
