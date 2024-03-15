@@ -141,7 +141,7 @@ display_menu() {
     echo -e "====================================${NC}\n"
     echo "------------------ Server Actions ------------------"
     echo "1. Config Server"
-    echo "------------------------------------\n"
+    echo -e "------------------------------------\n"
 
     echo "------------------ Cloudflared ------------------"
     echo "2. Install Cloudflared"
@@ -152,15 +152,15 @@ display_menu() {
     echo "7. Remove a specific tunnel"
     echo "8. Update Cloudflared"
     echo "9. Uninstall Cloudflared"
-    echo "------------------------------------\n"
+    echo -e "------------------------------------\n"
 
     echo "------------------ Enhancements ------------------"
     echo "10. Enable BBR"
     echo "11. Disable BBR"
     echo "12. Apply network enhancements"
     echo "13. Reset network"
-    echo "------------------------------------\n"
-    
+    echo -e "------------------------------------\n"
+
     echo "0. Exit Menu"
 
     # Display the system OS and distribution
