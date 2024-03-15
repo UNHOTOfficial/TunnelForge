@@ -440,6 +440,12 @@ remove_specific_tunnel() {
     check_and_change_directory
 
     # Get the tunnel name or ID from the user
+    if [list_tunnels == *"No tunnels exist."*]; then
+        echo -e "${RED}No tunnels exist.${NC}"
+
+        pause
+    fi
+
     list_tunnels
     read -p "Enter the name or ID of the tunnel to close: " tunnel
 
