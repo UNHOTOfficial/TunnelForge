@@ -120,7 +120,7 @@ check_and_change_directory() {
 
 # Function to show tunnels list
 list_tunnels() {
-    echo -e "${YELLOW}Here are your existing tunnels:${NC}\n"
+    echo -e "\n${YELLOW}Here are your existing tunnels:${NC}"
     # Get tunnels list
     output=$(./$(get_filename) tunnel list)
 
