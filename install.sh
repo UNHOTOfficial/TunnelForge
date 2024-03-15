@@ -204,7 +204,7 @@ install_cloudflared() {
     echo -e "${YELLOW}Starting the installation of cloudflared...${NC}"
 
     # Determine the appropriate file path based on system architecture or other conditions
-    local cloudflared_path=$(get_cloudflared_path)
+    local cloudflared_path=$(get_filename)
 
     if [ -d "/root/Argo" ] && [ -f "$cloudflared_path" ]; then
         echo -e "${RED}Error: The cloudflared binary already exist at $cloudflared_path.${NC}"
