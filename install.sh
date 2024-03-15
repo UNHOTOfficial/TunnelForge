@@ -17,7 +17,7 @@ check_cloudflared_installation() {
     if [ -d "/root/Argo" ] && [ -f "/root/Argo/$(get_filename)" ]; then
         echo -e "${GREEN}Installed.${NC}"
     else
-        echo -e "${RED}31mNot installed.${NC}"
+        echo -e "${RED}Not installed.${NC}"
     fi
 }
 
