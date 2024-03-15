@@ -96,10 +96,12 @@ get_filename() {
 check_argo_directory() {
     # Check if the /root/Argo directory exists
     if [ ! -d "/root/Argo" ]; then
-        echo "First install cloudflared using 2 option in menu."
-        exit 1
+        echo -e "\033[0;31mError: The /root/Argo directory does not exist.\033[0m"
+        echo -e "\033[0;33mPlease install cloudflared using the 2nd option in the menu.\033[0m"
+        return 1
+    else
+        return 0
     fi
-
 }
 
 # Function to cd to Argo directory
