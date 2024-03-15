@@ -139,7 +139,11 @@ display_menu() {
     echo -e "${PURPLE}===================================="
     echo -e "  ========= ${GREEN}TunnelForge${PURPLE} ========="
     echo -e "====================================${NC}\n"
+    echo "------------------ Server Actions ------------------"
     echo "1. Config Server"
+    echo "------------------------------------\n"
+
+    echo "------------------ Cloudflared ------------------"
     echo "2. Install Cloudflared"
     echo "3. Create Tunnel"
     echo "4. Run Tunnel"
@@ -148,10 +152,15 @@ display_menu() {
     echo "7. Remove a specific tunnel"
     echo "8. Update Cloudflared"
     echo "9. Uninstall Cloudflared"
+    echo "------------------------------------\n"
+
+    echo "------------------ Enhancements ------------------"
     echo "10. Enable BBR"
     echo "11. Disable BBR"
     echo "12. Apply network enhancements"
     echo "13. Reset network"
+    echo "------------------------------------\n"
+    
     echo "0. Exit Menu"
 
     # Display the system OS and distribution
@@ -310,7 +319,7 @@ run_tunnel() {
         echo -e "${RED}No tunnels exist.${NC}"
         echo -e "${YELLOW}Please create a tunnel first.${NC}"
 
-        pause
+        exit 1
     fi
 
     list_tunnels
@@ -451,9 +460,9 @@ remove_specific_tunnel() {
     output=$(list_tunnels)
 
     if [[ $output == *"No tunnels exist."* ]]; then
-        echo -e "${RED}No tunnels exist.${NC}"
+        list_tunnels
 
-        pause
+        exit 1
     fi
 
     list_tunnels
