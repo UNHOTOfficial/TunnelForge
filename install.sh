@@ -36,14 +36,20 @@ check_tunnel_status() {
 }
 
 check_tunnel_running() {
-    # Run the command and save its output
-    output=$(tmux ls 2>&1)
-
-    # Check if the output contains the string "no server running"
-    if [[ $output == *"no server running"* ]]; then
-        echo -e "\033[0;31mNot running.\033[0m"
-    else
+    # Check if tmux is installed
+    if ! command -v tmux &> /dev/null; then
         echo -e "\033[0;32mRunning.\033[0m"
+        return
+    fi
+
+    # Run the command and save its output
+    output=$(tmux ls)
+
+    # Check if the output contains any tunnel information
+    if [[ $output == *"Argo"* ]]; then
+        echo -e "\033[0;32mRunning.\033[0m"
+    else
+        echo -e "\033[0;31mNot Running.\033[0m"
     fi
 }
 
