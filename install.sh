@@ -140,8 +140,7 @@ display_menu() {
     echo -e "  ========= ${GREEN}TunnelForge${PURPLE} ========="
     echo -e "====================================${NC}\n"
     echo "------------------ Server Actions ------------------"
-    echo "1. Config Server"
-    echo -e "------------------------------------\n"
+    echo -e "1. Config Server\n"
 
     echo "------------------ Cloudflared ------------------"
     echo "2. Install Cloudflared"
@@ -151,15 +150,13 @@ display_menu() {
     echo "6. Close tunnel(s)"
     echo "7. Remove a specific tunnel"
     echo "8. Update Cloudflared"
-    echo "9. Uninstall Cloudflared"
-    echo -e "------------------------------------\n"
+    echo -e "9. Uninstall Cloudflared\n"
 
     echo "------------------ Enhancements ------------------"
     echo "10. Enable BBR"
     echo "11. Disable BBR"
     echo "12. Apply network enhancements"
-    echo "13. Reset network"
-    echo -e "------------------------------------\n"
+    echo -e "13. Reset network/n"
 
     echo "0. Exit Menu"
 
