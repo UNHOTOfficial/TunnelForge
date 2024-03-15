@@ -304,8 +304,8 @@ run_tunnel() {
 
     echo -e "\033[0;34mStarting the process to run a tunnel...${NC}"
 
-    output=$(if [[ $output == *"No tunnels exist."* ]]; then
-)
+    output=$(list_tunnels)
+
     if [[ $output == *"No tunnels exist."* ]]; then
         echo -e "${RED}No tunnels exist.${NC}"
         echo -e "${YELLOW}Please create a tunnel first.${NC}"
@@ -448,9 +448,9 @@ remove_specific_tunnel() {
 
     check_and_change_directory
 
-output=$(list_tunnels)
+    output=$(list_tunnels)
 
-if [[ $output == *"No tunnels exist."* ]]; then
+    if [[ $output == *"No tunnels exist."* ]]; then
         echo -e "${RED}No tunnels exist.${NC}"
 
         pause
