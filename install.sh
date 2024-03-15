@@ -44,15 +44,17 @@ check_tunnel_status() {
 check_tunnel_running() {
     # Check if tmux is installed
     if ! command -v tmux &>/dev/null; then
-         echo -e "\033[0;31mNot Running.\033[0m"
+        echo -e "\033[0;31mNot Running.\033[0m"
         return
     fi
 
-    # Run the command and save its output
-    output=$(tmux ls)
+    # Run the command and save its output, suppressing error messages
+    output=$(tmux ls 2>/dev/null)
 
-    # Check if the output contains any tunnel information
-    if [[ $output == *"Argo"* ]]; then
+    # Check if the output contains "no server running on /tmp/tmux-0/default"
+    if [[ $output == "no server running on /tmp/tmux-0/default" ]]; then
+        echo -e "\033[0;31mNot Running.\033[0m"
+    elif [[ $output == *"Argo"* ]]; then
         echo -e "\033[0;32mRunning.\033[0m"
     else
         echo -e "\033[0;31mNot Running.\033[0m"
