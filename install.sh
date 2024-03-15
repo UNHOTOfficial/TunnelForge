@@ -204,6 +204,7 @@ install_cloudflared() {
     if [ -d "/root/Argo" ] && [ -f "$(get_filename)" ]; then
         echo "Argo directory and Cloudflared are already installed."
         return
+        pause
     fi
 
     # Create directory and change into it
