@@ -98,9 +98,7 @@ check_argo_directory() {
     if [ ! -d "/root/Argo" ]; then
         echo -e "\033[0;31mError: The /root/Argo directory does not exist.\033[0m"
         echo -e "\033[0;33mPlease install cloudflared using the 2nd option in the menu.\033[0m"
-        return 1
-    else
-        return 0
+        exit 1
     fi
 }
 
