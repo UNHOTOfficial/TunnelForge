@@ -21,6 +21,12 @@ check_tunnel_status() {
         return
     fi
 
+    # Check if cert.pem exists in either /etc/cloudflared or /usr/local/etc/cloudflared
+    if [ ! -f "/etc/cloudflared/cert.pem" ] && [ ! -f "/usr/local/etc/cloudflared/cert.pem" ]; then
+        echo -e "\033[0;31mNot Logged In.\033[0m"
+        return
+    fi
+
     # Change to the Argo directory
     cd /root/Argo || exit
 
@@ -37,7 +43,7 @@ check_tunnel_status() {
 
 check_tunnel_running() {
     # Check if tmux is installed
-    if ! command -v tmux &> /dev/null; then
+    if ! command -v tmux &>/dev/null; then
         echo -e "\033[0;31mNot Running.\033[0m"
         return
     fi
