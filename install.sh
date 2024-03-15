@@ -201,7 +201,7 @@ config_server() {
 install_cloudflared() {
     clear_screen
 
-    if [ -d "/root/Argo" ] && [ -f "/root/cloudflared-linux-amd64" ]; then
+    if [ -d "/root/Argo" ] && [ -f "$(get_filename)" ]; then
         echo "Argo directory and Cloudflared are already installed."
         return
     fi
