@@ -201,11 +201,18 @@ config_server() {
 install_cloudflared() {
     clear_screen
 
-    if [ -d "/root/Argo" ] && [ -f "$(get_filename)" ]; then
-        echo "Argo directory and Cloudflared are already installed."
+    echo -e "${YELLOW}Starting the installation of cloudflared...${NC}"
 
-        pause
+    # Determine the appropriate file path based on system architecture or other conditions
+    local cloudflared_path=$(get_cloudflared_path)
+
+    if [ -d "/root/Argo" ] && [ -f "$cloudflared_path" ]; then
+        echo -e "${RED}Error: The cloudflared binary already exist at $cloudflared_path.${NC}"
+
+        exit 1
     fi
+
+    echo -e "${YELLOW}Installing cloudflared from $cloudflared_path...${NC}"
 
     # Create directory and change into it
     mkdir -p Argo && cd Argo
@@ -228,7 +235,8 @@ install_cloudflared() {
 
         wget $url && chmod +x $(basename $url)
 
-        echo -e "${GREEN}cloudflared downloaded successfully${NC}"
+        echo -e "${GREEN}cloudflared downloaded successfully.${NC}"
+
     }
 
     # Run the function to download cloudflared
