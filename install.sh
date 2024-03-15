@@ -183,7 +183,7 @@ display_menu() {
 
 # Function to pause and wait for user input
 pause() {
-    read -p "Press Enter to continue..."
+    read -p $\n'Press Enter to continue...'
 }
 
 # Function to config server
@@ -308,7 +308,7 @@ run_tunnel() {
 
     # Get and confirm tunnel name from user
     while true; do
-        echo -e "${BLUE}Note:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
+        echo -e "${BLUE}\nNote:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
         read -p $'\nEnter the tunnel name: ' tunnel_name
 
         # Confirm tunnel name
@@ -389,6 +389,7 @@ list_all_tunnels() {
 
     check_and_change_directory
 
+    echo -e "\n${YELLOW}Here are your existing tunnels:${NC}"
     # Run the command and save its output
     output=$(./$(get_filename) tunnel list | grep -v "You can obtain more detailed information for each")
 
@@ -414,8 +415,12 @@ close_tunnels() {
         # Run the command to close all tunnels
         tmux kill-server
         echo -e "${GREEN}All tunnels closed successfully.${NC}"
+
+        pause
     else
         echo -e "${RED}Action cancelled.${NC}"
+
+        pause
     fi
 }
 
@@ -428,7 +433,7 @@ remove_specific_tunnel() {
     check_and_change_directory
 
     # Get the tunnel name or ID from the user
-    echo -e "${BLUE}Note:${NC} ${GREEN}You can see created tunnels by selecting 5 in menu.${NC}"
+    list_tunnels
     read -p "Enter the name or ID of the tunnel to close: " tunnel
 
     # Confirm the action
@@ -439,6 +444,8 @@ remove_specific_tunnel() {
         # Run the command to close the tunnel
         ./$(get_filename) tunnel delete "$tunnel"
         echo -e "${GREEN}Tunnel '$tunnel' closed successfully.${NC}"
+
+        pause
     else
         echo -e "${RED}Action cancelled.${NC}"
 
