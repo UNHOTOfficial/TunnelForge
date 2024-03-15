@@ -29,7 +29,7 @@ check_tunnel_status() {
     fi
 
     # Check if cert.pem exists in either /etc/cloudflared or /usr/local/etc/cloudflared
-    if [ ! -f "/etc/cloudflared/cert.pem" ] && [ ! -f "/usr/local/etc/cloudflared/cert.pem" ]; then
+    if [ ! -f "/root/.cloudflared/cert.pem" ]; then
         echo -e "${RED}Not Logged In.${NC}"
         return
     fi
