@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# Define color codes
+RED='\033[0;31m'
+GREEN='${GREEN}'
+YELLOW='${YELLOW}'
+NC='${NC}' # No Color
+
 # Function to clear the terminal screen
 clear_screen() {
     printf "\033c"
@@ -8,22 +14,22 @@ clear_screen() {
 # Function to check if Cloudflared is installed
 check_cloudflared_installation() {
     if [ -d "/root/Argo" ] && [ -f "/root/Argo/$(get_filename)" ]; then
-        echo -e "\033[0;32mInstalled.\033[0m"
+        echo -e "${GREEN}Installed.${NC}"
     else
-        echo -e "\033[0;31mNot installed.\033[0m"
+        echo -e "${RED}31mNot installed.${NC}"
     fi
 }
 
 check_tunnel_status() {
     # Check if the Argo directory exists
     if [ ! -d "/root/Argo" ]; then
-        echo -e "\033[0;31mNot Created.\033[0m"
+        echo -e "${RED}Not Created.${NC}"
         return
     fi
 
     # Check if cert.pem exists in either /etc/cloudflared or /usr/local/etc/cloudflared
     if [ ! -f "/etc/cloudflared/cert.pem" ] && [ ! -f "/usr/local/etc/cloudflared/cert.pem" ]; then
-        echo -e "\033[0;31mNot Logged In.\033[0m"
+        echo -e "${RED}Not Logged In.${NC}"
         return
     fi
 
@@ -35,16 +41,16 @@ check_tunnel_status() {
 
     # Check if the output contains any tunnel information
     if [[ $output == *"ID"* && $output == *"NAME"* && $output == *"CONNECTIONS"* ]]; then
-        echo -e "\033[0;32mCreated.\033[0m"
+        echo -e "${GREEN}Created.${NC}"
     else
-        echo -e "\033[0;31mNot Created.\033[0m"
+        echo -e "${RED}Not Created.${NC}"
     fi
 }
 
 check_tunnel_running() {
     # Check if tmux is installed
     if ! command -v tmux &>/dev/null; then
-        echo -e "\033[0;31mNot Running.\033[0m"
+        echo -e "${RED}Not Running.${NC}"
         return
     fi
 
@@ -53,11 +59,11 @@ check_tunnel_running() {
 
     # Check if the output contains "no server running on /tmp/tmux-0/default"
     if [[ $output == "no server running on /tmp/tmux-0/default" ]]; then
-        echo -e "\033[0;31mNot Running.\033[0m"
+        echo -e "${RED}Not Running.${NC}"
     elif [[ $output == *"Argo"* ]]; then
-        echo -e "\033[0;32mRunning.\033[0m"
+        echo -e "${GREEN}Running.${NC}"
     else
-        echo -e "\033[0;31mNot Running.\033[0m"
+        echo -e "${RED}Not Running.${NC}"
     fi
 }
 
@@ -65,8 +71,8 @@ check_tunnel_running() {
 get_ips() {
     ipv4=$(curl -s4m8 ip.sb -k)
     ipv6=$(curl -s6m8 ip.sb -k)
-    echo -e "\033[0;33mServer IPv4: \033[0m$ipv4"
-    echo -e "\033[0;33mServer IPv6: \033[0m$ipv6"
+    echo -e "${YELLOW}Server IPv4: ${NC}$ipv4"
+    echo -e "${YELLOW}Server IPv6: ${NC}$ipv6"
 }
 
 # Function to detect OS architecture
@@ -87,7 +93,7 @@ get_filename() {
     elif [ "$arch" == "i686" ]; then
         echo "cloudflared-linux-386"
     else
-        echo -e "\033[0;31mOS not supported!\033[0m"
+        echo -e "${RED}OS not supported!${NC}"
         exit 1
     fi
 }
@@ -96,8 +102,8 @@ get_filename() {
 check_argo_directory() {
     # Check if the /root/Argo directory exists
     if [ ! -d "/root/Argo" ]; then
-        echo -e "\033[0;31mError: The /root/Argo directory does not exist.\033[0m"
-        echo -e "\033[0;33mPlease install cloudflared using the 2nd option in the menu.\033[0m"
+        echo -e "${RED}Error: The /root/Argo directory does not exist.${NC}"
+        echo -e "${YELLOW}Please install cloudflared using the 2nd option in the menu.${NC}"
         exit 1
     fi
 }
@@ -106,7 +112,7 @@ check_argo_directory() {
 check_and_change_directory() {
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
-        echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
+        echo -e "${YELLOW}Changing to the Argo directory...${NC}"
         cd /root/Argo || exit
     fi
 }
@@ -115,8 +121,8 @@ check_and_change_directory() {
 display_menu() {
     clear_screen
     echo -e "\033[0;35m===================================="
-    echo -e "  ========= \033[0;32mTunnelForge\033[0;35m ========="
-    echo -e "====================================\033[0m\n"
+    echo -e "  ========= ${GREEN}TunnelForge\033[0;35m ========="
+    echo -e "====================================${NC}\n"
     echo "1. Config Server"
     echo "2. Install Cloudflared"
     echo "3. Create Tunnel"
@@ -133,22 +139,22 @@ display_menu() {
     echo "0. Exit Menu"
 
     # Display the system OS and distribution
-    echo -e "\n\033[0;33mSystem OS:\033[0m $(uname) $(lsb_release -d -s 2>/dev/null) - $(detect_os_architecture)"
+    echo -e "\n${YELLOW}System OS:${NC} $(uname) $(lsb_release -d -s 2>/dev/null) - $(detect_os_architecture)"
 
     # Display Tunnel status
-    echo -n -e "\033[0;33mArgo status: \033[0m"
+    echo -n -e "${YELLOW}Argo status: ${NC}"
 
     # Check Cloudflared installation status
     check_cloudflared_installation
 
     # Display Tunnel status
-    echo -n -e "\033[0;33mTunnel status: \033[0m"
+    echo -n -e "${YELLOW}Tunnel status: ${NC}"
 
     # Check Cloudflared installation status
     check_tunnel_status
 
     # Display Tunnel status
-    echo -n -e "\033[0;33mTunnel running: \033[0m"
+    echo -n -e "${YELLOW}Tunnel running: ${NC}"
 
     # Check Cloudflared installation status
     check_tunnel_running
@@ -156,7 +162,7 @@ display_menu() {
     # Display server IPs
     get_ips
 
-    echo -e "\n\033[0;35m====================================\033[0m"
+    echo -e "\n\033[0;35m====================================${NC}"
 }
 
 # Function to pause and wait for user input
@@ -185,7 +191,7 @@ config_server() {
     # Install tmux
     sudo apt install -y tmux
 
-    echo -e "\033[0;32mServer configured successfully\033[0m"
+    echo -e "${GREEN}Server configured successfully${NC}"
 
     pause
 }
@@ -214,13 +220,13 @@ install_cloudflared() {
         elif [ "$arch" == "i686" ]; then
             url="https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-386"
         else
-            echo -e "\033[0;31mOS not supported!\033[0m"
+            echo -e "${RED}OS not supported!${NC}"
             return 1
         fi
 
         wget $url && chmod +x $(basename $url)
 
-        echo -e "\033[0;32mcloudflared downloaded successfully\033[0m"
+        echo -e "${GREEN}cloudflared downloaded successfully${NC}"
     }
 
     # Run the function to download cloudflared
@@ -240,13 +246,13 @@ create_tunnel() {
 
     check_and_change_directory
 
-    echo -e "\033[0;34mStarting the process to create a new tunnel...\033[0m"
+    echo -e "\033[0;34mStarting the process to create a new tunnel...${NC}"
 
     # Run cloudflared tunnel login
-    echo -e "\033[0;33mLogging in...\033[0m"
+    echo -e "${YELLOW}Logging in...${NC}"
     ./$(get_filename) tunnel login
 
-    echo -e "\033[0;33mHere are your existing tunnels:\033[0m"
+    echo -e "${YELLOW}Here are your existing tunnels:${NC}"
     # Get tunnels list
     ./$(get_filename) tunnel list
 
@@ -256,7 +262,7 @@ create_tunnel() {
     # Run cloudflared tunnel create with user-provided tunnel name
     ./$(get_filename) tunnel create "$tunnel_name"
 
-    echo -e "\033[0;32mTunnel '$tunnel_name' created successfully.\033[0m"
+    echo -e "${GREEN}Tunnel '$tunnel_name' created successfully.${NC}"
 
     pause
 }
@@ -270,11 +276,11 @@ run_tunnel() {
     # Enabling ping group
     echo '0 1' | sudo tee /proc/sys/net/ipv4/ping_group_range
 
-    echo -e "\033[0;34mStarting the process to run a tunnel...\033[0m"
+    echo -e "\033[0;34mStarting the process to run a tunnel...${NC}"
 
     # Get and confirm tunnel name from user
     while true; do
-        echo -e "\033[1;34mNote:\033[0m \033[0;32mThe tunnel name should be same as the one you set while creating tunnel.\033[0m"
+        echo -e "\033[1;34mNote:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
         read -p "Enter the tunnel name: " tunnel_name
 
         # Confirm tunnel name
@@ -292,8 +298,8 @@ run_tunnel() {
 
     # Get and confirm subdomain from user
     while true; do
-        echo -e "\033[1;34mNote:\033[0m \033[0;32mThe subdomain is not needed to be added before in Cloudflare DNS records. It will be added automatically.\033[0m"
-        echo -e "\033[1;34mInput:\033[0m \033[0;33mPlease provide the full sub-domain as: \033[1;31msubdomain.example.com\033[0m"
+        echo -e "\033[1;34mNote:${NC} ${GREEN}The subdomain is not needed to be added before in Cloudflare DNS records. It will be added automatically.${NC}"
+        echo -e "\033[1;34mInput:${NC} ${YELLOW}Please provide the full sub-domain as: \033[1;31msubdomain.example.com${NC}"
         read -p "Enter the subdomain where you want to run the tunnel: " subdomain
 
         # Confirm subdomain
@@ -323,7 +329,7 @@ run_tunnel() {
                 break
             else
                 clear_screen
-                echo -e "\033[0;31mPort $port is not within the valid range. Please enter a valid port number.\033[0m"
+                echo -e "${RED}Port $port is not within the valid range. Please enter a valid port number.${NC}"
             fi
         else
             clear_screen
@@ -335,7 +341,7 @@ run_tunnel() {
     tmux new-session -d -s cloudflared_session
 
     # Check if the user is in the Argo directory
-    tmux send-keys -t cloudflared_session 'if [[ $PWD != *"/Argo"* ]]; then echo -e "\033[0;33mChanging to the Argo directory...\033[0m"; cd /root/Argo || exit; fi' C-m
+    tmux send-keys -t cloudflared_session 'if [[ $PWD != *"/Argo"* ]]; then echo -e "${YELLOW}Changing to the Argo directory...${NC}"; cd /root/Argo || exit; fi' C-m
 
     # Run cloudflared tunnel inside tmux
     tmux send-keys -t cloudflared_session "./$(get_filename) tunnel route dns $tunnel_name $subdomain" C-m
@@ -344,7 +350,7 @@ run_tunnel() {
     # Attach to tmux session
     tmux attach-session -t cloudflared_session
 
-    echo -e "\033[0;32mTunnel '$tunnel_name' running successfully on subdomain '$subdomain'.\033[0m"
+    echo -e "${GREEN}Tunnel '$tunnel_name' running successfully on subdomain '$subdomain'.${NC}"
 }
 
 # Function to list all tunnels
@@ -379,9 +385,9 @@ close_tunnels() {
     if [[ $confirmation =~ ^(yes|y)$ ]]; then
         # Run the command to close all tunnels
         tmux kill-server
-        echo -e "\033[0;32mAll tunnels closed successfully.\033[0m"
+        echo -e "${GREEN}All tunnels closed successfully.${NC}"
     else
-        echo -e "\033[0;31mAction cancelled.\033[0m"
+        echo -e "${RED}Action cancelled.${NC}"
     fi
 }
 
@@ -394,7 +400,7 @@ remove_specific_tunnel() {
     check_and_change_directory
 
     # Get the tunnel name or ID from the user
-    echo -e "\033[1;34mNote:\033[0m \033[0;32mYou can see created tunnels by selecting 5 in menu.\033[0m"
+    echo -e "\033[1;34mNote:${NC} ${GREEN}You can see created tunnels by selecting 5 in menu.${NC}"
     read -p "Enter the name or ID of the tunnel to close: " tunnel
 
     # Confirm the action
@@ -404,9 +410,9 @@ remove_specific_tunnel() {
     if [[ $confirmation =~ ^(yes|y)$ ]]; then
         # Run the command to close the tunnel
         ./$(get_filename) tunnel delete "$tunnel"
-        echo -e "\033[0;32mTunnel '$tunnel' closed successfully.\033[0m"
+        echo -e "${GREEN}Tunnel '$tunnel' closed successfully.${NC}"
     else
-        echo -e "\033[0;31mAction cancelled.\033[0m"
+        echo -e "${RED}Action cancelled.${NC}"
 
         pause
     fi
@@ -423,7 +429,7 @@ update_cloudflared() {
     # Run cloudflared update
     ./$(get_filename) update
 
-    echo -e "\033[0;32mCloudflared updated successfully.\033[0m"
+    echo -e "${GREEN}Cloudflared updated successfully.${NC}"
 
     pause
 }
@@ -445,9 +451,9 @@ uninstall_cloudflared() {
         # Remove the Argo directory
         rm -rf /root/Argo
 
-        echo -e "\033[0;32mCloudflared uninstalled successfully.\033[0m"
+        echo -e "${GREEN}Cloudflared uninstalled successfully.${NC}"
     else
-        echo -e "\033[0;31mAction cancelled.\033[0m"
+        echo -e "${RED}Action cancelled.${NC}"
     fi
 
     pause
@@ -459,7 +465,7 @@ enable_bbr() {
 
     # Check if BBR is already enabled
     if sysctl net.ipv4.tcp_congestion_control | grep -q 'bbr'; then
-        echo -e "\033[0;32mBBR is already enabled.\033[0m"
+        echo -e "${GREEN}BBR is already enabled.${NC}"
         pause
         return
     fi
@@ -469,7 +475,7 @@ enable_bbr() {
     echo "net.ipv4.tcp_congestion_control=bbr" | sudo tee -a /etc/sysctl.d/99-sysctl.conf
     sudo sysctl --system
 
-    echo -e "\033[0;32mBBR enabled successfully.\033[0m"
+    echo -e "${GREEN}BBR enabled successfully.${NC}"
 
     pause
 }
@@ -480,7 +486,7 @@ disable_bbr() {
 
     # Check if BBR is already disabled
     if [ ! -f "/etc/sysctl.d/99-sysctl.conf" ]; then
-        echo -e "\033[0;32mBBR is already disabled.\033[0m"
+        echo -e "${GREEN}BBR is already disabled.${NC}"
         pause
         return
     fi
@@ -489,7 +495,7 @@ disable_bbr() {
     sudo rm -f /etc/sysctl.d/99-sysctl.conf
     sudo sysctl --system
 
-    echo -e "\033[0;32mBBR disabled successfully.\033[0m"
+    echo -e "${GREEN}BBR disabled successfully.${NC}"
 
     pause
 }
@@ -500,14 +506,14 @@ apply_network_enhancements() {
 
     # Check if BBR is enabled
     if [ -f "/etc/sysctl.d/99-sysctl.conf" ]; then
-        echo -e "\033[0;32mBBR is enabled.\033[0m"
+        echo -e "${GREEN}BBR is enabled.${NC}"
     else
-        echo -e "\033[0;31mBBR is not enabled. Please enable BBR first.\033[0m"
+        echo -e "${RED}BBR is not enabled. Please enable BBR first.${NC}"
         pause
         return
     fi
 
-    echo -e "\033[0;31mNetwork enhancements applied successfully.\033[0m"
+    echo -e "${RED}Network enhancements applied successfully.${NC}"
 
     pause
 }
@@ -561,9 +567,9 @@ reset_network() {
         sudo sed -i '/net.ipv4/d' /etc/sysctl.d/99-sysctl.conf
         sudo sed -i '/net.core/d' /etc/sysctl.d/99-sysctl.conf
         sudo sysctl -p /etc/sysctl.d/99-sysctl.conf
-        echo -e "\033[0;32mNetwork reset successfully.\033[0m"
+        echo -e "${GREEN}Network reset successfully.${NC}"
     else
-        echo -e "\033[0;31mAction cancelled.\033[0m"
+        echo -e "${RED}Action cancelled.${NC}"
     fi
 
     pause
@@ -615,12 +621,12 @@ while true; do
         ;;
     0)
         clear_screen
-        echo -e "\033[0;32mExiting...\033[0m"
+        echo -e "${GREEN}Exiting...${NC}"
         exit
         ;;
     *)
         clear_screen
-        echo -e "\033[0;31mInvalid choice. Please enter a valid option.\033[0m"
+        echo -e "${RED}Invalid choice. Please enter a valid option.${NC}"
         pause
         ;;
     esac
