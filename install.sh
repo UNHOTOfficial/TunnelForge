@@ -267,7 +267,12 @@ create_tunnel() {
 
     echo -e "${YELLOW}Here are your existing tunnels:${NC}"
     # Get tunnels list
-    ./$(get_filename) tunnel list
+    # Check if the output contains "No tunnels were found"
+    if [[ $output == *"No tunnels were found for the given filter flags"* ]]; then
+        echo "${RED}No tunnels exist.${NC}"
+    else
+        echo "$output"
+    fi
 
     # Get tunnel name from user
     read -p "Enter a unique name for the new tunnel: " tunnel_name
@@ -287,7 +292,7 @@ run_tunnel() {
     check_argo_directory
 
     # Enabling ping group
-    echo '0 1' | sudo tee /proc/sys/net/ipv4/ping_group_range
+    echo '0 1' | sudo tee /proc/sys/net/ipv4/ping_group_range >/dev/null
 
     echo -e "\033[0;34mStarting the process to run a tunnel...${NC}"
 
