@@ -183,7 +183,7 @@ display_menu() {
 
 # Function to pause and wait for user input
 pause() {
-    read -p $\n'Press Enter to continue...'
+    read -p $'\nPress Enter to continue...'
 }
 
 # Function to config server
