@@ -92,6 +92,16 @@ get_filename() {
     fi
 }
 
+# Function to check Argo directory existance
+check_argo_directory() {
+    # Check if the /root/Argo directory exists
+    if [ ! -d "/root/Argo" ]; then
+        echo "First install cloudflared using 2 option in menu."
+        return 1
+    fi
+    return 0
+}
+
 # Function to display the menu
 display_menu() {
     clear_screen
@@ -217,11 +227,7 @@ install_cloudflared() {
 create_tunnel() {
     clear_screen
 
-    # Check if the /root/Argo directory exists
-    if [ ! -d "/root/Argo" ]; then
-        echo "First install cloudflared using 2 option in menu."
-        return
-    fi
+    check_argo_directory
 
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
@@ -253,6 +259,8 @@ create_tunnel() {
 # Function to run a tunnel
 run_tunnel() {
     clear_screen
+
+    check_argo_directory
 
     # Enabling ping group
     echo '0 1' | sudo tee /proc/sys/net/ipv4/ping_group_range
@@ -337,6 +345,9 @@ run_tunnel() {
 # Function to list all tunnels
 list_all_tunnels() {
     clear_screen
+
+    check_argo_directory
+
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
         cd /root/Argo || exit
@@ -353,6 +364,9 @@ list_all_tunnels() {
 
 # Function to close tunnels
 close_tunnels() {
+    clear_screen
+
+    check_argo_directory
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
         cd /root/Argo || exit
@@ -374,6 +388,8 @@ close_tunnels() {
 # Function to delete a specific tunnel
 remove_specific_tunnel() {
     clear_screen
+
+    check_argo_directory
 
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
@@ -403,6 +419,8 @@ remove_specific_tunnel() {
 update_cloudflared() {
     clear_screen
 
+    check_argo_directory
+
     # Check if the user is in the Argo directory
     if [[ $PWD != *"/Argo"* ]]; then
         echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
@@ -420,6 +438,8 @@ update_cloudflared() {
 # Function to uninstall Cloudflared
 uninstall_cloudflared() {
     clear_screen
+
+    check_argo_directory
 
     # Confirm the action
     read -p "Are you sure you want to uninstall Cloudflared? [y/N] " confirmation
