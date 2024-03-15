@@ -15,10 +15,14 @@ check_cloudflared_installation() {
 }
 
 check_tunnel_status() {
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        cd /root/Argo || exit
+    # Check if the Argo directory exists
+    if [ ! -d "/root/Argo" ]; then
+        echo -e "\033[0;31mNot Created.\033[0m"
+        return
     fi
+
+    # Change to the Argo directory
+    cd /root/Argo || exit
 
     # Run the command and save its output
     output=$(./$(get_filename) tunnel list)
