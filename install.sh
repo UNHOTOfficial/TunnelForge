@@ -258,9 +258,12 @@ create_tunnel() {
 
     echo -e "\033[0;34mStarting the process to create a new tunnel...${NC}"
 
-    # Run cloudflared tunnel login
-    echo -e "${YELLOW}Logging in...${NC}"
-    ./$(get_filename) tunnel login
+    # Check if cert.pem does not exist
+    if [ ! -f "/root/.cloudflared/cert.pem" ]; then
+        # Run cloudflared tunnel login
+        echo -e "${YELLOW}Logging in...${NC}"
+        ./$(get_filename) tunnel login
+    fi
 
     echo -e "${YELLOW}Here are your existing tunnels:${NC}"
     # Get tunnels list
