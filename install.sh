@@ -308,7 +308,6 @@ run_tunnel() {
 
     # Get and confirm tunnel name from user
     while true; do
-        echo -e "${BLUE}\nNote:${NC} ${GREEN}The tunnel name should be same as the one you set while creating tunnel.${NC}"
         read -p $'\nEnter the tunnel name: ' tunnel_name
 
         # Confirm tunnel name
