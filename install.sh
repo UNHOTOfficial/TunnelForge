@@ -411,6 +411,14 @@ close_tunnels() {
     confirmation=${confirmation,,} # tolower
 
     if [[ $confirmation =~ ^(yes|y)$ ]]; then
+        # Check if any tmux server is running
+        output=$(tmux ls 2>&1)
+
+        if [[ $output == *"no server running on /tmp/tmux-0/default"* ]]; then
+            echo -e "${RED}No tunnels are running.${NC}"
+            return
+        fi
+
         # Run the command to close all tunnels
         tmux kill-server
         echo -e "${GREEN}All tunnels closed successfully.${NC}"
