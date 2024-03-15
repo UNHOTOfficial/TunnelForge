@@ -97,9 +97,17 @@ check_argo_directory() {
     # Check if the /root/Argo directory exists
     if [ ! -d "/root/Argo" ]; then
         echo "First install cloudflared using 2 option in menu."
-        return 1
     fi
-    return 0
+
+}
+
+# Function to cd to Argo directory
+check_and_change_directory() {
+    # Check if the user is in the Argo directory
+    if [[ $PWD != *"/Argo"* ]]; then
+        echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
+        cd /root/Argo || exit
+    fi
 }
 
 # Function to display the menu
@@ -229,11 +237,7 @@ create_tunnel() {
 
     check_argo_directory
 
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
-        cd /root/Argo || exit
-    fi
+    check_and_change_directory
 
     echo -e "\033[0;34mStarting the process to create a new tunnel...\033[0m"
 
@@ -348,10 +352,7 @@ list_all_tunnels() {
 
     check_argo_directory
 
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        cd /root/Argo || exit
-    fi
+    check_and_change_directory
 
     # Run the command and save its output
     output=$(./$(get_filename) tunnel list | grep -v "You can obtain more detailed information for each")
@@ -367,10 +368,8 @@ close_tunnels() {
     clear_screen
 
     check_argo_directory
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        cd /root/Argo || exit
-    fi
+
+    check_and_change_directory
 
     # Confirm the action
     read -p "Are you sure you want to close all tunnels? [y/N] " confirmation
@@ -391,10 +390,7 @@ remove_specific_tunnel() {
 
     check_argo_directory
 
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        cd /root/Argo || exit
-    fi
+    check_and_change_directory
 
     # Get the tunnel name or ID from the user
     echo -e "\033[1;34mNote:\033[0m \033[0;32mYou can see created tunnels by selecting 5 in menu.\033[0m"
@@ -421,11 +417,7 @@ update_cloudflared() {
 
     check_argo_directory
 
-    # Check if the user is in the Argo directory
-    if [[ $PWD != *"/Argo"* ]]; then
-        echo -e "\033[0;33mChanging to the Argo directory...\033[0m"
-        cd /root/Argo || exit
-    fi
+    check_and_change_directory
 
     # Run cloudflared update
     ./$(get_filename) update
